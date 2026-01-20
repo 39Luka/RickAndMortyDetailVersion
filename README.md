@@ -12,6 +12,18 @@ This app explores the Rick and Morty universe by consuming a RESTful API with vi
 - Real-world scenario: network images + data in a single response
 - No authentication complexity - focus on core concepts
 
+## UI Preview
+
+Here's what you'll build - a character card component displaying Rick and Morty character data:
+
+![Character Card Example](assets/card_info.png)
+
+The card demonstrates key features you'll implement:
+- **Network image loading** with Coil (character avatar from API)
+- **Status indicator** with colored dot (Alive/Dead/Unknown)
+- **API data display**: name, status, species, last known location, first episode appearance
+- **Material 3 design** with proper spacing and typography
+
 ## Tech Stack
 
 - **Language**: Kotlin
