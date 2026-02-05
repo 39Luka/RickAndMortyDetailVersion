@@ -13,6 +13,14 @@ import net.iessochoa.sergiocontreras.rickandmortyapi.ui.screens.CharactersScreen
 import net.iessochoa.sergiocontreras.rickandmortyapi.ui.screens.CharacterDetailScreen
 import net.iessochoa.sergiocontreras.rickandmortyapi.ui.viewmodel.RickAndMortyViewModel
 
+// 📌 Definimos las rutas como sealed class
+sealed class Screen(val route: String) {
+    object Characters : Screen("characters")
+    object CharacterDetail : Screen("character_detail/{characterId}") {
+        fun createRoute(id: Int) = "character_detail/$id"
+    }
+}
+
 @Composable
 fun RickAndMortyNavGraph(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -20,30 +28,34 @@ fun RickAndMortyNavGraph(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = "characters",
+        startDestination = Screen.Characters.route,
         modifier = modifier
     ) {
-        composable("characters") {
+        // Lista de personajes
+        composable(Screen.Characters.route) {
             CharactersScreen(
                 modifier = Modifier.fillMaxSize(),
                 viewModel = viewModel,
                 onCharacterClick = { id ->
-                    navController.navigate("character_detail/$id")
+                    navController.navigate(Screen.CharacterDetail.createRoute(id))
                 }
             )
         }
+
+        // Detalle de personaje
         composable(
-            route = "character_detail/{characterId}",
+            route = Screen.CharacterDetail.route,
             arguments = listOf(navArgument("characterId") { type = NavType.IntType })
         ) { backStackEntry ->
             val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+
+            // Aquí usamos el enfoque híbrido para no recargar si ya está en memoria
             CharacterDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 viewModel = viewModel,
                 characterId = characterId,
-                navController = navController // ⚡ aquí
+                navController = navController
             )
         }
-
     }
 }
