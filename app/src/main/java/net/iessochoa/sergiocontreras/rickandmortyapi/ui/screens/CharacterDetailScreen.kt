@@ -30,7 +30,10 @@ fun CharacterDetailScreen(
         viewModel.loadCharacterById(characterId)
     }
 
-    //val character = viewModel.uiState.collectAsState().value.characters.find { it.id == characterId }
+    //Para no hacer otra busqueda y buscar de la lista
+    //val uiState by viewModel.uiState.collectAsState()
+    //
+    //val character = uiState.characters.find { it.id == characterId }
     val characterState = viewModel.selectedCharacter.collectAsState().value
 
     Scaffold(
