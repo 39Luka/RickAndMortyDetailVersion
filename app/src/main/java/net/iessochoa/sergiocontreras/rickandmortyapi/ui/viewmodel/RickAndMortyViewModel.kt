@@ -27,7 +27,7 @@ class RickAndMortyViewModel : ViewModel(){
                 currentState = RequestStatus.IsLoading
             )
             try {
-                val response = RickAndMortyRepository.api.getCharacters(page) // 🔹 necesitas que la API acepte page
+                val response = RickAndMortyRepository.getCharacters(page) // 🔹 necesitas que la API acepte page
                 _uiState.value = _uiState.value.copy(
                     characters = response.results,
                     currentState = RequestStatus.Success(response.results),
@@ -48,7 +48,7 @@ class RickAndMortyViewModel : ViewModel(){
         viewModelScope.launch {
             _selectedCharacter.value = RequestStatusDetail.IsLoading
             try {
-                val character = RickAndMortyRepository.api.getCharacterById(id)
+                val character = RickAndMortyRepository.getCharacterById(id)
                 _selectedCharacter.value = RequestStatusDetail.Success(character)
             } catch (e: Exception) {
                 _selectedCharacter.value = RequestStatusDetail.Error(e.message ?: "Error desconocido")

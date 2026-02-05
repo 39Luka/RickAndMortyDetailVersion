@@ -6,7 +6,7 @@ fun loadCharacters(page: Int = 1) {
             currentState = RequestStatus.IsLoading
         )
         try {
-            val response = RickAndMortyRepository.api.getCharacters(page)
+            val response = RickAndMortyRepository.getCharacters(page)
 
             // Añadimos los nuevos personajes a los ya existentes
             val newList = if (page == 1) response.results else _uiState.value.characters + response.results
