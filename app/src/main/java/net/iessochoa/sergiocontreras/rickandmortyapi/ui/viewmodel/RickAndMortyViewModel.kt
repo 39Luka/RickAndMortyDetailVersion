@@ -55,4 +55,16 @@ class RickAndMortyViewModel : ViewModel(){
             }
         }
     }
+
+    fun restoreCurrentPage() {
+        val page = _uiState.value.currentPage
+        if (_uiState.value.characters.isEmpty()) {
+            loadCharacters(page)
+        } else {
+            _uiState.value = _uiState.value.copy(
+                currentState = RequestStatus.Success(_uiState.value.characters)
+            )
+        }
+    }
+
 }

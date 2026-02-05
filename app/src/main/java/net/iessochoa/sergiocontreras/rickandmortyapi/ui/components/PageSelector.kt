@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 
 @Composable
@@ -17,14 +17,12 @@ fun PageSelector(
     totalPages: Int,
     onPageSelected: (Int) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
     Box {
-        Button(
-            onClick = { expanded = true },
-            enabled = totalPages > 1
-        ) { Text("Page $currentPage/$totalPages") }
-
+        Button(onClick = { expanded = true }) {
+            Text("Page $currentPage/$totalPages")
+        }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -41,4 +39,5 @@ fun PageSelector(
         }
     }
 }
+
 

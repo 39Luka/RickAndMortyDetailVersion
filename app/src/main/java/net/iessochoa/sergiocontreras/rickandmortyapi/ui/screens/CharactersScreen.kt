@@ -12,6 +12,7 @@ import net.iessochoa.sergiocontreras.rickandmortyapi.ui.viewmodel.RequestStatus
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import net.iessochoa.sergiocontreras.rickandmortyapi.ui.components.PageSelector
@@ -24,6 +25,13 @@ fun CharactersScreen(
 ) {
     // Observamos el estado actual de los personajes
     val uiState = viewModel.uiState.collectAsState().value
+
+    LaunchedEffect(uiState.characters) {
+        if (uiState.characters.isEmpty()) {
+            viewModel.loadCharacters(uiState.currentPage)
+        }
+    }
+
 
     Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState.currentState) {
@@ -54,12 +62,15 @@ fun CharactersScreen(
                         contentPadding = PaddingValues(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(state.characterList) { character ->
+                        val characters = state.characterList
+
+                        items(characters) { character ->
                             CharacterCard(
                                 character = character,
                                 onClick = { onCharacterClick(character.id) }
                             )
                         }
+
                     }
                 }
             }
