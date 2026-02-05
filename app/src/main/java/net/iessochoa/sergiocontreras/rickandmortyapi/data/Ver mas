@@ -1,0 +1,59 @@
+ViewModel
+
+fun loadCharacters(page: Int = 1) {
+    viewModelScope.launch {
+        _uiState.value = _uiState.value.copy(
+            currentState = RequestStatus.IsLoading
+        )
+        try {
+            val response = RickAndMortyRepository.api.getCharacters(page)
+
+            // Añadimos los nuevos personajes a los ya existentes
+            val newList = if (page == 1) response.results else _uiState.value.characters + response.results
+
+            _uiState.value = _uiState.value.copy(
+                characters = newList,
+                currentState = RequestStatus.Success(newList),
+                currentPage = page,
+                totalPages = response.info.pages
+            )
+        } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(
+                currentState = RequestStatus.Error(e.message ?: "Error desconocido")
+            )
+        }
+    }
+}
+
+CaractersScreen
+
+is RequestStatus.Success -> {
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(state.characterList) { character ->
+                CharacterCard(
+                    character = character,
+                    onClick = { onCharacterClick(character.id) }
+                )
+            }
+
+            // ⚡ Item extra para el botón "Ver más" si hay más páginas
+            if (uiState.currentPage < uiState.totalPages) {
+                item {
+                    Button(
+                        onClick = { viewModel.loadCharacters(uiState.currentPage + 1) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        Text("Ver más")
+                    }
+                }
+            }
+        }
+    }
+}

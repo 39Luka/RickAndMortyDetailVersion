@@ -20,20 +20,25 @@ fun PageSelector(
     var expanded by remember { mutableStateOf(false) }
 
     Box {
-        Button(onClick = { expanded = true }) {
-            Text("Página $currentPage / $totalPages")
-        }
+        Button(
+            onClick = { expanded = true },
+            enabled = totalPages > 1
+        ) { Text("Page $currentPage/$totalPages") }
 
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            for (i in 1..totalPages) {
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            for (page in 1..totalPages) {
                 DropdownMenuItem(
-                    text = { Text("Página $i") },
+                    text = { Text("Page $page") },
                     onClick = {
-                        onPageSelected(i)
                         expanded = false
+                        onPageSelected(page)
                     }
                 )
             }
         }
     }
 }
+
