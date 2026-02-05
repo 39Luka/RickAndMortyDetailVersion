@@ -14,6 +14,7 @@ object RickAndMortyRepository {
 
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
     }
 
     private val api: RickAndMortyApiService by lazy {
