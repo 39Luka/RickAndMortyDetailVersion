@@ -59,3 +59,50 @@ fun RickAndMortyNavGraph(modifier: Modifier = Modifier) {
         }
     }
 }
+/*
+interface Screen {
+    val route: String
+}
+
+object CharactersScreenRoute : Screen {
+    override val route = "characters"
+}
+
+object CharacterDetailScreenRoute : Screen {
+    override val route = "character_detail/{characterId}"
+    fun createRoute(id: Int) = "character_detail/$id"
+}
+
+
+NavHost(
+    navController = navController,
+    startDestination = CharactersScreenRoute.route,
+    modifier = modifier
+) {
+    composable(CharactersScreenRoute.route) {
+        CharactersScreen(
+            modifier = Modifier.fillMaxSize(),
+            viewModel = viewModel,
+            onCharacterClick = { id ->
+                navController.navigate(CharacterDetailScreenRoute.createRoute(id))
+            }
+        )
+    }
+
+    composable(
+        route = CharacterDetailScreenRoute.route,
+        arguments = listOf(navArgument("characterId") { type = NavType.IntType })
+    ) { backStackEntry ->
+        val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+
+        CharacterDetailScreen(
+            modifier = Modifier.fillMaxSize(),
+            viewModel = viewModel,
+            characterId = characterId,
+            navController = navController
+        )
+    }
+}
+
+
+ */
